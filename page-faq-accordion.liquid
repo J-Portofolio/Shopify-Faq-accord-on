@@ -1,0 +1,68 @@
+<div class="explorer__content">
+  {%- assign expand_questions = section.settings.expand_questions -%}
+
+  {%- for block in section.blocks -%}
+    {%- case block.type -%}
+      {%- when 'separator' -%}
+        <h3 class="explorer_faq__separator h3" {{ block.shopify_attributes }}>{{ block.settings.title | escape }}</h3>
+
+      {%- when 'question' -%}
+  		  <div class="explorer_faq__item">
+            <h4 class="explorer_faq__question h5">{{ block.settings.title }}</h4>
+            <input type="checkbox" checked>
+              {{ block.settings.answer }}
+  		  </div>
+    {%- endcase -%}
+  {%- endfor -%}
+</div>
+{% schema %}
+  {
+    "name": "FAQs",
+    "blocks": [
+      {
+        "type": "separator",
+        "name": "Séparateur de section",
+        "settings": [
+          {
+            "type": "text",
+            "id": "title",
+            "label": "En-tête"
+          }
+        ]
+      },
+      {
+        "type": "question",
+        "name": "Question",
+        "settings": [
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Question"
+          },
+          {
+            "type": "html",
+            "id": "answer",
+            "label": "Réponse"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}
+
+{% comment %}
+(function() {
+  $('body').on('click', '.shopify_explorer_faq__question', function() {
+    $(this).next('.shopify_explorer_faq__answer').slideToggle(150).toggleClass('active');
+    $(this).toggleClass('active');
+  });
+
+  $(document).on('shopify:block:select', '#shopify-section-page-shopify_explorer_faq-template', function(event) {
+    $(event.target).find('.shopify_explorer_faq__answer').slideDown(150);
+  });
+
+  $(document).on('shopify:block:deselect', '#shopify-section-page-shopify_explorer_faq-template', function(event) {
+    $(event.target).find('.shopify_explorer_faq__answer').slideUp(150);
+  });
+}());
+{% endcomment %}
