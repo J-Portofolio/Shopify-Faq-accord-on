@@ -1,0 +1,30 @@
+function setPreviousSiblings(elem, filter) {
+    var sibs = [];
+    while (elem = elem.previousSibling) {
+        if (elem.nodeType === 3) continue; // text node
+        if (!filter) elem.removeAttribute("style");
+      	if (filter === "none") elem.style.display = filter;
+    }
+    return;
+}
+
+document.addEventListener('DOMContentLoaded', function(event) {
+  const formsuccess = document.getElementById('Form_success_trigger');
+  if (formsuccess){
+  	formsuccess.click();
+  }
+  const parent = document.getElementById('shopify-section-page-contact-questions');
+  const firstchild = parent.firstChild;
+  const categories = document.querySelectorAll(".categoryinput:not(:first-child)");
+  for (const categorie of categories) {
+    categorie.addEventListener('click', function(event) {
+		console.log('Sélection effectuée');
+		if (this.checked){
+          	setPreviousSiblings(this);
+		}
+		else if (this.checked === false){
+          	setPreviousSiblings(this,"none");
+    }
+    })
+	}
+})
