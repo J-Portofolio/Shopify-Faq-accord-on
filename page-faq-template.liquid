@@ -1,0 +1,54 @@
+<div class="explorer__content faq_block">
+  {% if page.title == "Centre d'aide" %}
+  <h2 class="small--text-center">Catégories</h2>
+  {% else %}
+  <h2 class="small--text-center">Autres catégories</h2>
+  {% endif %}
+  <ul>
+  {% assign subcat = page.content | split:'===' %}
+  {% if subcat[1] %}
+  	{% assign subcat = subcat[0] %}
+  {% endif %}
+  {%- for block in section.blocks -%}
+    {%- case block.type -%}
+      {%- when 'category' -%}
+    	{% if block.settings.nom != page.title and block.settings.nom != subcat %}
+  		<li class="faq-category-block">
+          <a class="faq-category-link" href="{{ block.settings.url | escape }}">
+            <h3 class="explorer_faq__category">{{ block.settings.nom | escape }}</h3>
+            <p>{{ block.settings.texte | escape }}</p>
+          </a>
+  		</li>
+    	{% endif %}
+    {%- endcase -%}
+  {%- endfor -%}
+  </ul>
+</div>
+{% schema %}
+  {
+    "name": "FAQs-categories",
+    "blocks": [
+      {
+        "type": "category",
+        "name": "Catégorie",
+        "settings": [
+          {
+              "type": "text",
+              "id": "nom",
+              "label": "Nom"
+          },
+		  {
+              "type": "url",
+              "id": "url",
+              "label": "url-page"
+          },
+          {
+              "type": "text",
+              "id": "texte",
+              "label": "Texte"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}
